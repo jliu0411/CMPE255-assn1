@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.venv/
+data/raw/train.csv
+data/raw/test.csv
+data/raw/*.zip
+artifacts/*.joblib
+*.pyc

@@ -1,0 +1,111 @@
+{
+  "model_config": {
+    "vocab_size": 256,
+    "block_size": 256,
+    "d_model": 192,
+    "n_layers": 4,
+    "n_heads": 6,
+    "n_kv_heads": 2,
+    "dropout": 0.1,
+    "rope_base": 10000.0
+  },
+  "train_config": {
+    "batch_size": 8,
+    "grad_accum": 4,
+    "max_steps": 200,
+    "learning_rate": 0.0003,
+    "min_lr": 2.9999999999999997e-05,
+    "warmup_steps": 20,
+    "eval_interval": 25,
+    "eval_batches": 10,
+    "weight_decay": 0.1,
+    "grad_clip": 1.0,
+    "seed": 42
+  },
+  "history": [
+    {
+      "step": 1,
+      "train_loss": 5.5471,
+      "val_loss": 5.5106,
+      "perplexity": 247.29,
+      "lr": 1.4999999999999999e-05,
+      "tokens_seen": 8192,
+      "elapsed_seconds": 2.2
+    },
+    {
+      "step": 25,
+      "train_loss": 3.8733,
+      "val_loss": 3.8198,
+      "perplexity": 45.6,
+      "lr": 0.00029948628424238555,
+      "tokens_seen": 204800,
+      "elapsed_seconds": 37.5
+    },
+    {
+      "step": 50,
+      "train_loss": 2.9486,
+      "val_loss": 2.9388,
+      "perplexity": 18.89,
+      "lr": 0.00028191342951089924,
+      "tokens_seen": 409600,
+      "elapsed_seconds": 71.3
+    },
+    {
+      "step": 75,
+      "train_loss": 2.5577,
+      "val_loss": 2.6192,
+      "perplexity": 13.73,
+      "lr": 0.00024243281890739117,
+      "tokens_seen": 614400,
+      "elapsed_seconds": 105.2
+    },
+    {
+      "step": 100,
+      "train_loss": 2.2834,
+      "val_loss": 2.4043,
+      "perplexity": 11.07,
+      "lr": 0.0001884425039850356,
+      "tokens_seen": 819200,
+      "elapsed_seconds": 143.6
+    },
+    {
+      "step": 125,
+      "train_loss": 2.0633,
+      "val_loss": 2.3053,
+      "perplexity": 10.03,
+      "lr": 0.00013005942891115965,
+      "tokens_seen": 1024000,
+      "elapsed_seconds": 185.3
+    },
+    {
+      "step": 150,
+      "train_loss": 1.8497,
+      "val_loss": 2.2413,
+      "perplexity": 9.41,
+      "lr": 7.822367269231717e-05,
+      "tokens_seen": 1228800,
+      "elapsed_seconds": 225.5
+    },
+    {
+      "step": 175,
+      "train_loss": 1.7491,
+      "val_loss": 2.2223,
+      "perplexity": 9.23,
+      "lr": 4.264844875005226e-05,
+      "tokens_seen": 1433600,
+      "elapsed_seconds": 264.8
+    },
+    {
+      "step": 200,
+      "train_loss": 1.6791,
+      "val_loss": 2.2042,
+      "perplexity": 9.06,
+      "lr": 2.9999999999999997e-05,
+      "tokens_seen": 1638400,
+      "elapsed_seconds": 304.8
+    }
+  ],
+  "parameters": 1623744,
+  "device": "cpu",
+  "trained_at": "2026-09-01T14:26:01Z"
+}

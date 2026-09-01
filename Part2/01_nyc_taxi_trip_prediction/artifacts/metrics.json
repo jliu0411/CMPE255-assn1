@@ -1,0 +1,38 @@
+{
+  "trained_at": "2026-09-01T05:16:55.834660+00:00",
+  "source": "sample_train.csv",
+  "raw_rows": 12000,
+  "training_rows": 9600,
+  "validation_rows": 2400,
+  "split": "chronological 80/20",
+  "features": [
+    "vendor_id",
+    "passenger_count",
+    "store_flag",
+    "pickup_hour",
+    "pickup_weekday",
+    "pickup_month",
+    "is_weekend",
+    "is_rush_hour",
+    "haversine_km",
+    "manhattan_km",
+    "bearing_sin",
+    "bearing_cos",
+    "pickup_latitude",
+    "pickup_longitude",
+    "dropoff_latitude",
+    "dropoff_longitude"
+  ],
+  "baseline": {
+    "rmsle": 0.4859,
+    "mae_seconds": 285.3,
+    "r2": -0.0602
+  },
+  "model": {
+    "rmsle": 0.0865,
+    "mae_seconds": 38.2,
+    "r2": 0.9803
+  },
+  "duration_median_seconds": 660.0,
+  "distance_median_km": 2.55
+}

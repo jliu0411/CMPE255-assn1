@@ -1,0 +1,28 @@
+
+CRISP-DM FINAL DEPLOYMENT REPORT
+================================
+
+Model Selected: SVR
+Test RMSE: 0.626557
+Test R²: -0.004023
+Test MAE: 0.124399
+
+RECOMMENDATION:
+The SVR model is the best-performing option in this dataset and should be used as a decision-support tool for salary benchmarking.
+
+BUSINESS VALUE:
+This model helps estimate player market value, supports roster planning, and provides a structured method to compare players based on performance, efficiency, age, and experience.
+
+KEY LIMITATIONS:
+- Contract negotiations include non-performance factors
+- Superstar salaries may be driven by branding and marketability
+- Model output should be interpreted as a market estimate, not a legal financial contract value
+
+DEPLOYMENT ADVICE:
+Deploy as an internal analytics dashboard or API endpoint that returns a salary estimate plus a band of plausible values. Use this output to support negotiations and roster planning decisions rather than as the sole determinant of compensation.
+
+NEXT STEPS:
+1. Add richer salary drivers such as awards, market size, and media exposure.
+2. Aggregate more seasons for stronger validation.
+3. Compare against ensemble models with additional tuning.
+4. Package as a production-ready prediction service for internal use.

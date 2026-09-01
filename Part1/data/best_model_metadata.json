@@ -1,0 +1,38 @@
+{
+  "best_model": "SVR",
+  "best_params": {
+    "C": "1",
+    "gamma": "scale",
+    "kernel": "rbf"
+  },
+  "timestamp": "2026-08-31T21:17:02.212371",
+  "metrics": {
+    "train_rmse": 1.0492638666593337,
+    "test_rmse": 0.6265573784310065,
+    "train_r2": 0.04400546898458413,
+    "test_r2": -0.004023224895558952,
+    "train_mae": 0.15986057483960825,
+    "test_mae": 0.12439886901147541,
+    "cv_r2": -9.32721397302207e+29
+  },
+  "feature_count": 15,
+  "features": [
+    "Blocks_Per_Game",
+    "Turnovers_Per_Game",
+    "Turnover_Usage_Ratio",
+    "Age_Experience_Gap",
+    "Shooting_Accuracy",
+    "Prime_Age_Factor",
+    "Rebounds_Per_Game",
+    "Rebound_Assist_Ratio",
+    "Points_Per_Game",
+    "Minutes_Per_Game",
+    "Three_Point_Percent",
+    "Games_Played",
+    "Defensive_Impact",
+    "Usage_Percent",
+    "Experience_Level"
+  ],
+  "training_samples": 400,
+  "test_samples": 100
+}

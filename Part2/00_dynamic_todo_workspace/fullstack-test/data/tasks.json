@@ -1,0 +1,44 @@
+[
+  {
+    "id": "a69d1929-ca8c-4ad0-bcc2-e73ddd727022",
+    "title": "Shape the product roadmap",
+    "notes": "Turn customer signals into the next set of bets.",
+    "status": "in-progress",
+    "priority": "high",
+    "tags": [
+      "Strategy"
+    ],
+    "dueDate": "2026-09-01",
+    "createdAt": "2026-09-01T04:56:53.115Z",
+    "updatedAt": "2026-09-01T04:56:53.115Z",
+    "completedAt": null
+  },
+  {
+    "id": "fb0e9ec5-db4f-426c-9c09-0e907dd1fa84",
+    "title": "Review research insights",
+    "notes": "Pull the strongest themes into a one-page brief.",
+    "status": "todo",
+    "priority": "medium",
+    "tags": [
+      "Research"
+    ],
+    "dueDate": "",
+    "createdAt": "2026-09-01T04:56:53.115Z",
+    "updatedAt": "2026-09-01T04:56:53.115Z",
+    "completedAt": null
+  },
+  {
+    "id": "e0191ce8-6c6e-424d-a0e6-46abc8382b22",
+    "title": "Share weekly progress",
+    "notes": "Keep it concise: wins, risks, and next moves.",
+    "status": "done",
+    "priority": "low",
+    "tags": [
+      "Team"
+    ],
+    "dueDate": "",
+    "createdAt": "2026-09-01T04:56:53.116Z",
+    "updatedAt": "2026-09-01T04:56:53.116Z",
+    "completedAt": "2026-09-01T04:56:53.116Z"
+  }
+]

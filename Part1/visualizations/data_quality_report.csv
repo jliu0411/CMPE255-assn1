@@ -1,0 +1,11 @@
+,Value
+Total Rows,500
+Total Columns,19
+Total Cells,9500
+Missing Cells,20
+Completeness,99.79%
+Duplicate Rows,0
+Numeric Features,15
+Categorical Features,2
+Target Variable,Salary
+Data Types,"{dtype('float64'): 12, dtype('int64'): 4, dtype('O'): 3}"

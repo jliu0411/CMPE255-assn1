@@ -1,0 +1,28 @@
+{
+  "model_name": "SVR",
+  "test_metrics": {
+    "rmse": 0.6265573784310065,
+    "mae": 0.12439886901147541,
+    "r2": -0.004023224895558952
+  },
+  "residual_summary": {
+    "mean": -0.012141838600026695,
+    "std": 0.6295956087259634,
+    "min": -6.2164940883505855,
+    "max": 0.22044136792239166,
+    "median": 0.04758906261155631
+  },
+  "normality_tests": {
+    "shapiro_pvalue": 1.3406306733611129e-21,
+    "ks_pvalue": 1.6898210581266992e-19,
+    "jarque_bera_pvalue": 0.0
+  },
+  "absolute_error_summary": {
+    "mean_abs_error": 0.12439886901147541,
+    "median_abs_error": 0.051488018992344,
+    "p90_abs_error": 0.1359022116432271,
+    "p95_abs_error": 0.15282295196831658,
+    "max_abs_error": 6.2164940883505855
+  },
+  "sample_count": 100
+}

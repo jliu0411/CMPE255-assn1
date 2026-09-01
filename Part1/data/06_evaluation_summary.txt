@@ -1,0 +1,25 @@
+CRISP-DM CHUNK 6: FINAL EVALUATION & DIAGNOSTICS
+============================================================
+Model: SVR
+Test RMSE: 0.626557
+Test MAE:  0.124399
+Test R²:   -0.004023
+
+Residual Summary:
+Mean:     -0.012142
+Std Dev:  0.629596
+Min:      -6.216494
+Max:      0.220441
+Median:   0.047589
+
+Normality Tests:
+Shapiro p-value: 0.000000
+KS p-value:      0.000000
+Jarque-Bera p:   0.000000
+
+Absolute Error Summary:
+Mean Abs Error: 0.124399
+Median Abs Error: 0.051488
+P90 Abs Error: 0.135902
+P95 Abs Error: 0.152823
+Max Abs Error: 6.216494

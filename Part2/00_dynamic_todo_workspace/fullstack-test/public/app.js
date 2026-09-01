@@ -1,0 +1,36 @@
+const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
+const state = { tasks: [], view: 'all', status: 'all', query: '', sort: 'smart', editing: null };
+const api = async (path = '', options = {}) => { const res = await fetch('/api/tasks' + path, { headers: { 'Content-Type': 'application/json' }, ...options }); const data = await res.json(); if (!res.ok) throw new Error(data.error); return data; };
+const today = () => new Date().toISOString().slice(0, 10);
+const fmtDate = value => { if (!value) return ''; const d = new Date(value + 'T12:00:00'); return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); };
+const escapeHtml = value => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+function filtered() {
+  const rank = { high: 0, medium: 1, low: 2 }; let list = [...state.tasks];
+  if (state.view === 'today') list = list.filter(t => t.dueDate === today() && t.status !== 'done');
+  if (state.view === 'upcoming') list = list.filter(t => t.dueDate > today() && t.status !== 'done');
+  if (state.view === 'done') list = list.filter(t => t.status === 'done');
+  if (['high','medium','low'].includes(state.view)) list = list.filter(t => t.priority === state.view && t.status !== 'done');
+  if (state.status !== 'all') list = list.filter(t => t.status === state.status);
+  if (state.query) { const q = state.query.toLowerCase(); list = list.filter(t => [t.title,t.notes,...t.tags].join(' ').toLowerCase().includes(q)); }
+  return list.sort((a,b) => state.sort === 'due' ? (a.dueDate || '9999').localeCompare(b.dueDate || '9999') : state.sort === 'priority' ? rank[a.priority]-rank[b.priority] : state.sort === 'newest' ? b.createdAt.localeCompare(a.createdAt) : (a.status === 'done')-(b.status === 'done') || rank[a.priority]-rank[b.priority] || (a.dueDate || '9999').localeCompare(b.dueDate || '9999'));
+}
+function render() {
+  const titles = { all:['My tasks','Make space for what matters.'],today:['Today','A focused view of what deserves attention.'],upcoming:['Upcoming','See what is waiting around the corner.'],done:['Completed','A record of momentum made.'],high:['High priority','Start with the work that moves things forward.'],medium:['Medium priority','Important work, comfortably in view.'],low:['Low priority','Small tasks for pockets of time.'] };
+  $('#viewTitle').textContent = titles[state.view][0]; $('#viewSubtitle').textContent = titles[state.view][1];
+  const list = filtered(); $('#taskList').innerHTML = list.map(t => `<article class="task ${t.status === 'done' ? 'done':''}" data-id="${t.id}"><input class="check" type="checkbox" aria-label="Mark ${escapeHtml(t.title)} complete" ${t.status === 'done'?'checked':''}><div><div class="task-title">${escapeHtml(t.title)}</div><div class="meta"><span class="pill priority-${t.priority}">${t.priority[0].toUpperCase()+t.priority.slice(1)}</span>${t.dueDate?`<span class="pill ${t.dueDate < today() && t.status !== 'done'?'overdue':''}">◷ ${t.dueDate < today() && t.status !== 'done'?'Overdue · ':''}${fmtDate(t.dueDate)}</span>`:''}${t.status==='in-progress'?'<span class="pill">In progress</span>':''}${t.tags.map(x=>`<span class="pill">#${escapeHtml(x)}</span>`).join('')}</div></div><div class="actions"><button class="icon edit" aria-label="Edit task">✎</button><button class="icon delete" aria-label="Delete task">⌫</button></div></article>`).join('');
+  $('#empty').hidden = list.length > 0; const done = state.tasks.filter(t=>t.status==='done').length, remaining=state.tasks.length-done, high=state.tasks.filter(t=>t.priority==='high'&&t.status!=='done').length;
+  $('#remainingStat').textContent=remaining; $('#completedStat').textContent=done; $('#focusStat').textContent=high; $('#allCount').textContent=remaining; $('#todayCount').textContent=state.tasks.filter(t=>t.dueDate===today()&&t.status!=='done').length;
+  const pct=state.tasks.length?Math.round(done/state.tasks.length*100):0; $('#progressValue').textContent=pct+'%'; $('.progress-ring').style.setProperty('--progress',pct*3.6+'deg'); $('#progressCopy').textContent=pct===100?'All done — wonderful':`${done} of ${state.tasks.length} complete`;
+  $$('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===state.view)); $$('.segment').forEach(x=>x.classList.toggle('active',x.dataset.status===state.status));
+}
+function openDialog(task=null){ state.editing=task?.id||null; $('#modalTitle').textContent=task?'Edit task':'Create a task'; const f=$('#taskForm'); f.reset(); if(task){ f.title.value=task.title;f.notes.value=task.notes;f.dueDate.value=task.dueDate;f.priority.value=task.priority;f.tags.value=task.tags.join(', '); } $('#taskDialog').showModal(); setTimeout(()=>$('#titleInput').focus(),0); }
+function toast(message){ const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2500); }
+async function mutate(work,message){ try{await work();state.tasks=await api();render();toast(message);}catch(e){toast(e.message);} }
+$('#taskForm').addEventListener('submit',e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.currentTarget));data.tags=data.tags.split(',').map(x=>x.trim()).filter(Boolean);mutate(()=>api(state.editing?'/'+state.editing:'',{method:state.editing?'PATCH':'POST',body:JSON.stringify(data)}),state.editing?'Task updated':'Task added');$('#taskDialog').close();});
+$('#taskList').addEventListener('click',e=>{const row=e.target.closest('.task');if(!row)return;const task=state.tasks.find(t=>t.id===row.dataset.id);if(e.target.matches('.check'))mutate(()=>api('/'+task.id,{method:'PATCH',body:JSON.stringify({status:e.target.checked?'done':'todo'})}),e.target.checked?'Nicely done':'Task reopened');if(e.target.closest('.edit'))openDialog(task);if(e.target.closest('.delete')&&confirm(`Delete “${task.title}”?`))mutate(()=>api('/'+task.id,{method:'DELETE'}),'Task deleted');});
+$$('[id$="Add"],#openComposer').forEach(x=>x.addEventListener('click',()=>openDialog())); $('#closeDialog').onclick=$('#cancelDialog').onclick=()=>$('#taskDialog').close();
+$$('.nav').forEach(x=>x.onclick=()=>{state.view=x.dataset.view;$('#sidebar').classList.remove('open');render()}); $$('.segment').forEach(x=>x.onclick=()=>{state.status=x.dataset.status;render()});
+$('#search').oninput=e=>{state.query=e.target.value;render()};$('#sort').onchange=e=>{state.sort=e.target.value;render()};$('#menuBtn').onclick=()=>$('#sidebar').classList.toggle('open');
+$('#themeBtn').onclick=()=>{document.body.classList.toggle('dark');localStorage.theme=document.body.classList.contains('dark')?'dark':'light'};if(localStorage.theme==='dark'||(!localStorage.theme&&matchMedia('(prefers-color-scheme: dark)').matches))document.body.classList.add('dark');
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();$('#search').focus()}if(e.key.toLowerCase()==='n'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName))openDialog();if(e.key==='Escape')$('#sidebar').classList.remove('open')});
+$('#dateLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}); state.tasks=await api(); render();

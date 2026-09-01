@@ -1,0 +1,28 @@
+{
+  "optimal_features": [
+    "Blocks_Per_Game",
+    "Turnovers_Per_Game",
+    "Turnover_Usage_Ratio",
+    "Age_Experience_Gap",
+    "Shooting_Accuracy",
+    "Prime_Age_Factor",
+    "Rebounds_Per_Game",
+    "Rebound_Assist_Ratio",
+    "Points_Per_Game",
+    "Minutes_Per_Game",
+    "Three_Point_Percent",
+    "Games_Played",
+    "Defensive_Impact",
+    "Usage_Percent",
+    "Experience_Level"
+  ],
+  "n_features": 15,
+  "selection_method": "Random Forest Feature Importance",
+  "baseline_test_rmse": 0.7028032839848892,
+  "optimal_test_rmse": 0.6674063220016084,
+  "baseline_test_r2": -0.2632509279354516,
+  "optimal_test_r2": -0.13920712885077746,
+  "rmse_improvement": 0.035396961983280795,
+  "r2_improvement": 0.12404379908467411,
+  "feature_reduction": 55.88235294117647
+}

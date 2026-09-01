@@ -1,0 +1,70 @@
+{
+  "target_variable": "Salary",
+  "target_mean": 49.75374095538774,
+  "target_std": 2.297846616277727,
+  "target_skewness": -10.750711445360157,
+  "numeric_features": [
+    "Year",
+    "Age",
+    "Games_Played",
+    "Minutes_Per_Game",
+    "Field_Goal_Percent",
+    "Three_Point_Percent",
+    "Free_Throw_Percent",
+    "Points_Per_Game",
+    "Rebounds_Per_Game",
+    "Assists_Per_Game",
+    "Steals_Per_Game",
+    "Blocks_Per_Game",
+    "Turnovers_Per_Game",
+    "Usage_Percent",
+    "Years_In_League"
+  ],
+  "categorical_features": [
+    "Position",
+    "Team"
+  ],
+  "top_correlated_features": [
+    "Field_Goal_Percent",
+    "Turnovers_Per_Game",
+    "Steals_Per_Game",
+    "Year",
+    "Three_Point_Percent",
+    "Free_Throw_Percent",
+    "Points_Per_Game",
+    "Usage_Percent",
+    "Rebounds_Per_Game",
+    "Assists_Per_Game"
+  ],
+  "top_correlations": [
+    0.08252930542910523,
+    0.07430147583128076,
+    0.03874735760865445,
+    0.03005441452011816,
+    0.027420199361858674,
+    0.02180409482066535,
+    0.011312398122340693,
+    0.006065210756235427,
+    0.0058892905643086624,
+    -0.01419200788312281
+  ],
+  "outlier_features": [
+    "Age",
+    "Games_Played",
+    "Minutes_Per_Game",
+    "Field_Goal_Percent",
+    "Three_Point_Percent",
+    "Free_Throw_Percent",
+    "Points_Per_Game",
+    "Rebounds_Per_Game",
+    "Assists_Per_Game",
+    "Steals_Per_Game",
+    "Blocks_Per_Game",
+    "Turnovers_Per_Game",
+    "Usage_Percent"
+  ],
+  "features_with_missing": [
+    "Three_Point_Percent"
+  ],
+  "normality": "No"
+}

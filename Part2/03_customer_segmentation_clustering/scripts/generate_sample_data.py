@@ -1,0 +1,10 @@
+from pathlib import Path
+import numpy as np,pandas as pd
+ROOT=Path(__file__).resolve().parents[1];rng=np.random.default_rng(42);n=2240;seg=rng.choice(4,n,p=[.22,.28,.3,.2]);income=np.array([90000,65000,38000,52000])[seg]*rng.lognormal(0,.2,n);spend=np.array([1900,1150,280,620])[seg]*rng.lognormal(0,.38,n);age=np.array([48,37,43,61])[seg]+rng.normal(0,8,n);children=np.array([0,1,2,1])[seg]+rng.binomial(1,.2,n);purchases=np.maximum(1,(spend/70+rng.normal(4,3,n))).astype(int);shares=rng.dirichlet([3,2,4],n)
+products=rng.dirichlet([5,1.2,3.5,1.1,1,1.5],n)*spend[:,None];channels=(shares*purchases[:,None]).round().astype(int);campaign=np.clip((spend/1400+rng.normal(.2,.5,n)),0,1)
+df=pd.DataFrame({'ID':np.arange(10000,10000+n),'Year_Birth':(2015-age).astype(int),'Education':rng.choice(['Graduation','PhD','Master','2n Cycle','Basic'],n,p=[.5,.15,.2,.1,.05]),'Marital_Status':rng.choice(['Married','Together','Single','Divorced','Widow'],n),'Income':income.round(0),'Kidhome':np.minimum(children,rng.integers(0,2,n)),'Teenhome':np.maximum(0,children-1),'Dt_Customer':pd.Timestamp('2012-01-01')+pd.to_timedelta(rng.integers(0,900,n),unit='D'),'Recency':np.clip(rng.normal(np.array([28,38,58,52])[seg],22,n),0,99).astype(int)})
+for i,c in enumerate(['MntWines','MntFruits','MntMeatProducts','MntFishProducts','MntSweetProducts','MntGoldProds']):df[c]=products[:,i].round().astype(int)
+df['NumDealsPurchases']=np.clip(rng.poisson(np.array([1,2,5,3])[seg]),0,15);df['NumWebPurchases'],df['NumCatalogPurchases'],df['NumStorePurchases']=channels.T;df['NumWebVisitsMonth']=np.clip(rng.poisson(np.array([3,5,7,5])[seg]),0,20)
+for c in ['AcceptedCmp1','AcceptedCmp2','AcceptedCmp3','AcceptedCmp4','AcceptedCmp5','Response']:df[c]=rng.binomial(1,campaign*.25)
+df['Complain']=rng.binomial(1,.01,n);df['Z_CostContact']=3;df['Z_Revenue']=11;df.loc[rng.choice(n,24,replace=False),'Income']=np.nan
+out=ROOT/'data/raw/sample_marketing_campaign.csv';out.parent.mkdir(parents=True,exist_ok=True);df.to_csv(out,index=False);print(f'Wrote {n:,} reproducible sample customers to {out}')
