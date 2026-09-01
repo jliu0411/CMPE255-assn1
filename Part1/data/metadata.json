@@ -1,6 +1,6 @@
 {
-  "dataset_source": "synthetic_nba_data.csv",
-  "total_rows": 500,
+  "dataset_source": "NBA Player Stats and Salaries_2010-2025.csv",
+  "total_rows": 7296,
   "total_columns": 19,
   "columns": [
     "Player",
@@ -24,11 +24,11 @@
     "Salary"
   ],
   "dtypes": {
-    "Player": "object",
+    "Player": "str",
     "Year": "int64",
     "Age": "int64",
-    "Position": "object",
-    "Team": "object",
+    "Position": "str",
+    "Team": "str",
     "Games_Played": "int64",
     "Minutes_Per_Game": "float64",
     "Field_Goal_Percent": "float64",

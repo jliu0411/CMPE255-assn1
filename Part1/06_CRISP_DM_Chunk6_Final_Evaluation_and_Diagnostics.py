@@ -73,7 +73,15 @@ print(f"✓ Residual max:  {residuals.max():.6f}")
 # 3. Diagnostic statistics
 print("\n[STEP 3] Running Residual Diagnostics...")
 normality_shapiro = stats.shapiro(residuals)
-normality_ks = stats.kstest(residuals, 'norm', args=(residuals.mean(), residuals.std()))
+# Standardize explicitly before the one-sample KS test. Recent SciPy versions
+# no longer accept the legacy normal-distribution ``args=(mean, std)`` path
+# through the array-API wrapper.
+residual_array = np.asarray(residuals, dtype=float)
+residual_std = residual_array.std(ddof=0)
+if not np.isfinite(residual_std) or residual_std == 0:
+    raise ValueError("Residual standard deviation must be finite and non-zero for the KS test.")
+standardized_residuals = (residual_array - residual_array.mean()) / residual_std
+normality_ks = stats.kstest(standardized_residuals, stats.norm.cdf)
 normality_jarque = stats.jarque_bera(residuals)
 
 print(f"✓ Shapiro p-value: {normality_shapiro.pvalue:.6f}")

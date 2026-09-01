@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What Is an NBA Player Really Worth?</title>
+<style>
+:root{--ink:#242424;--muted:#6b6b6b;--green:#1a8917;--line:#e6e6e6;--soft:#f7f7f5}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:#fff;font-family:Georgia,serif;line-height:1.72}
+header{border-bottom:1px solid var(--line)}.nav{max-width:1080px;margin:auto;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;font-family:Arial,sans-serif}
+.brand{font-family:Georgia,serif;font-weight:800;font-size:28px;letter-spacing:-1px}.pill{background:var(--green);color:#fff;border-radius:999px;padding:8px 16px;font-size:13px}
+article{max-width:760px;margin:64px auto 96px;padding:0 24px}h1{font-family:Arial,sans-serif;font-size:54px;line-height:1.05;letter-spacing:-2.2px;margin:0 0 18px}
+.dek{color:var(--muted);font-size:23px;line-height:1.4;margin:0 0 26px}.byline{display:flex;gap:14px;align-items:center;padding:18px 0 30px;border-bottom:1px solid var(--line);font-family:Arial,sans-serif;font-size:14px}
+.avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#111;color:#fff;font-weight:700}.meta{color:var(--muted)}
+p,li{font-size:20px}h2{font-family:Arial,sans-serif;font-size:32px;line-height:1.2;letter-spacing:-.8px;margin:56px 0 18px}h3{font-family:Arial,sans-serif;font-size:23px;margin:38px 0 12px}
+blockquote{margin:40px 0;padding-left:24px;border-left:3px solid var(--ink);font-size:28px;line-height:1.45;font-style:italic}
+figure{margin:42px -70px}figure img{display:block;width:100%;border:1px solid var(--line);border-radius:4px}figcaption{color:var(--muted);text-align:center;font:14px/1.5 Arial,sans-serif;margin-top:10px}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}.metric{background:var(--soft);border-radius:8px;padding:20px}.metric strong{display:block;font:700 28px Arial,sans-serif}.metric span{color:var(--muted);font:13px Arial,sans-serif}
+.callout{background:#f2f8f1;border-left:4px solid var(--green);padding:22px 24px;margin:34px 0}.callout p{margin:0}
+table{width:100%;border-collapse:collapse;margin:26px 0;font-family:Arial,sans-serif}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--line)}th{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}td{font-size:16px}
+code{background:var(--soft);padding:2px 6px;border-radius:4px;font-size:.88em}.formula{text-align:center;background:var(--soft);padding:24px;border-radius:8px;font-size:22px;margin:30px 0}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:50px;padding-top:30px;border-top:1px solid var(--line)}.tag{background:var(--soft);padding:8px 12px;border-radius:4px;font:13px Arial,sans-serif}
+@media(max-width:900px){figure{margin:36px 0}}@media(max-width:640px){h1{font-size:40px}.metric-grid{grid-template-columns:1fr}.dek{font-size:20px}p,li{font-size:18px}}
+@media print{@page{size:A4;margin:18mm 16mm 20mm}header{display:none}article{max-width:none;margin:0;padding:0}h1{font-size:38px}h2{font-size:25px;margin-top:34px;break-after:avoid}h3{break-after:avoid}p,li{font-size:13px;line-height:1.55}blockquote{font-size:19px;break-inside:avoid}figure{margin:24px 0;break-inside:avoid}figure img{max-height:165mm;object-fit:contain}.metric-grid,.callout,table,.formula{break-inside:avoid}.metric strong{font-size:21px}.tags{display:none}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">Data Stories</div><div class="pill">CMPE 255 &middot; Part 1</div></div></header>
+<article>
+<div class="meta">DATA SCIENCE &middot; MACHINE LEARNING &middot; SPORTS ANALYTICS</div>
+<h1>What Is an NBA Player Really Worth?</h1>
+<p class="dek">An end-to-end CRISP-DM case study in predicting contracts, discovering contract lag, and building a salary-cap-aware fair-value estimator.</p>
+<div class="byline"><div class="avatar">DS</div><div><strong>CMPE 255 Data Science Project</strong><div class="meta">September 2026 &middot; 8 min read</div></div></div>
+
+<p>Shai Gilgeous-Alexander provided the perfect stress test. Feed an MVP season into a conventional salary model and it can return roughly $30 million. That looks reasonable beside his recorded 2024&ndash;25 salary of $35.86 million&mdash;until we ask a better question.</p>
+
+<blockquote>Are we predicting what a player happens to earn, or what that player would be worth in a new negotiation?</blockquote>
+
+<p>Those are different targets. Existing contracts remember when they were signed. Rookie scales, early extensions, maximum-salary rules, service time, and a rising league salary cap can keep an elite player's paycheck below present market value. This project began as an NBA salary predictor. It became more honest when it separated a historical contract benchmark from a transparent estimate of fair value.</p>
+
+<h2>The situation: 7,296 real player-seasons</h2>
+
+<p>The analysis uses the Kaggle <em>NBA Player Stats and Salaries 2010&ndash;2025</em> dataset. After resolving duplicate rows for traded players, the working table contains 7,296 unique player-seasons. The pipeline maps compact fields to readable basketball statistics and converts salary from dollars to millions.</p>
+
+<div class="metric-grid"><div class="metric"><strong>7,296</strong><span>player-seasons</span></div><div class="metric"><strong>2010&ndash;25</strong><span>seasons represented</span></div><div class="metric"><strong>$55.76M</strong><span>largest observed salary</span></div></div>
+
+<p>Salary is strongly right-skewed. The median is about $3.01 million and the mean is $6.49 million. A small superstar group creates a long upper tail, meaning a model can perform well for typical players while struggling on the contracts people discuss most.</p>
+
+<figure><img src="visualizations/Target_Variable_Distribution.png" alt="Distribution of NBA salaries"><figcaption>Most salaries sit far below the small superstar tail.</figcaption></figure>
+
+<h2>CRISP-DM kept the question honest</h2>
+
+<p>The seven executable project chunks implement the six CRISP-DM phases: business understanding, data understanding, preparation, modeling, evaluation, and deployment. This structure matters because it makes assumptions visible and gives unexpected results a place to be investigated.</p>
+
+<h3>Understanding and preparing the data</h3>
+
+<p>Missing shooting percentages are median-imputed, while legitimate salary outliers remain because star contracts are real observations rather than data errors. The project creates basketball-informed predictors for scoring efficiency, playmaking balance, turnover pressure, prime age, shooting accuracy, and defensive contribution.</p>
+
+<p>The split is chronological: 5,836 earlier player-seasons train the model and 1,460 newer seasons form the holdout. This is harder than a random split because league salaries rise over time, but it better resembles real deployment.</p>
+
+<figure><img src="visualizations/Correlation_Matrix.png" alt="Correlation matrix"><figcaption>Points, minutes, assists, rebounds, usage, age, and experience provide signal, but no box-score statistic explains contract economics alone.</figcaption></figure>
+
+<h3>Comparing models</h3>
+
+<p>Eight regression families compete under the same split: Linear Regression, Ridge, Lasso, ElasticNet, Support Vector Regression, K-Nearest Neighbors, Random Forest, and Gradient Boosting. Feature selection produces a compact set of 15 inputs.</p>
+
+<p>Gradient Boosting wins on the chronological holdout using 100 estimators, a 0.05 learning rate, depth 5, and 0.8 subsampling.</p>
+
+<div class="metric-grid"><div class="metric"><strong>0.757</strong><span>holdout R&sup2;</span></div><div class="metric"><strong>$5.80M</strong><span>holdout RMSE</span></div><div class="metric"><strong>$3.63M</strong><span>holdout MAE</span></div></div>
+
+<figure><img src="visualizations/Algorithm_Comparison.png" alt="Algorithm comparison"><figcaption>Gradient Boosting provides the strongest holdout performance among the eight candidates.</figcaption></figure>
+
+<h2>The complication: prediction is not valuation</h2>
+
+<p>For SGA's MVP-level 2025 season, the model produces a historical contract benchmark near $30 million. That result is not absurd: his recorded salary was $35.86 million. It estimates the kind of salary found in the training data. The problem is that the contract was negotiated before his MVP peak.</p>
+
+<table><thead><tr><th>Output</th><th>What it means</th><th>SGA example</th></tr></thead><tbody>
+<tr><td>Observed salary</td><td>What the existing deal paid</td><td>$35.86M</td></tr>
+<tr><td>ML benchmark</td><td>Expected historical contract salary</td><td>about $30.21M</td></tr>
+<tr><td>Fair first-year value</td><td>Cap-aware value at a 2028 start</td><td>$65.49M</td></tr>
+<tr><td>Four-year illustration</td><td>Value with 8% annual raises</td><td>$293.41M</td></tr>
+</tbody></table>
+
+<p>The gap is <em>contract lag</em>: performance can change every game, while compensation changes only when contract rules allow it. A statistically reasonable prediction of an old contract can therefore be a poor answer to a new-negotiation question.</p>
+
+<h2>The resolution: report both answers</h2>
+
+<div class="callout"><p><strong>Historical contract benchmark</strong> comes from the trained Gradient Boosting model. <strong>Fair annual value</strong> comes from an explicit salary-cap and market framework. Neither is disguised as the other.</p></div>
+
+<p>The user supplies a stats season and contract start year because they serve different purposes. The stats season locates the performance in time. The contract year determines the relevant salary cap and the player's service time when the deal begins.</p>
+
+<p>The framework ranks performance against 7,296 historical seasons. Points receive the largest weight, followed by assists, rebounds, minutes, steals, and blocks. Service time supplies a simplified 25%, 30%, or 35% maximum-salary tier. MVP, All-NBA, and All-Star selections add visible adjustments.</p>
+
+<div class="formula">Fair value = min(eligible maximum, max(contract benchmark, performance value))</div>
+
+<p>For the demonstration, 2025 performance and a 2028 contract start increase SGA from six to nine years of service. MVP and All-NBA recognition support the 35% tier. Using the project's projected cap produces approximately $65.49 million in year one and $293.41 million over four years with illustrative 8% raises.</p>
+
+<h2>Diagnostics and limitations</h2>
+
+<p>The final model explains roughly 76% of salary variation in the newest holdout seasons. Its median absolute error is about $1.96 million, but the 95th-percentile absolute error reaches $13.67 million. Residual normality tests reject a normal distribution. In plain language, typical benchmarks are useful, but extreme contracts remain substantially less certain.</p>
+
+<figure><img src="visualizations/06_actual_vs_predicted.png" alt="Actual versus predicted salaries"><figcaption>Predictions follow the broad market while compressing some extreme outcomes.</figcaption></figure>
+<figure><img src="visualizations/06_residual_distribution.png" alt="Residual distribution"><figcaption>Heavy residual tails warn against presenting any point estimate as certainty.</figcaption></figure>
+
+<p>The fair-value result is a decision-support estimate, not a complete NBA Collective Bargaining Agreement engine. It simplifies award lookback windows, Bird rights, options, trade bonuses, extension timing, and team circumstances. Future salary caps are explicitly labeled as projections. Fair value is not an observed label, so its performance score is a transparent heuristic rather than ground truth.</p>
+
+<h2>The lesson</h2>
+
+<blockquote>A model can be statistically accurate and still answer the wrong business question.</blockquote>
+
+<p>The most important improvement was not another hyperparameter search. It was redefining the product so historical salary and current value could no longer be confused. CRISP-DM exposed the mismatch, while transparent assumptions made the final result easier to challenge, explain, and improve.</p>
+
+<p>Run the project with <code>.\run.ps1</code>, then open <code>http://127.0.0.1:8006</code>. The script installs dependencies, executes all seven analytical chunks, writes the model artifacts, and launches the fair-value interface.</p>
+
+<div class="tags"><span class="tag">NBA Analytics</span><span class="tag">CRISP-DM</span><span class="tag">Gradient Boosting</span><span class="tag">Data Science</span><span class="tag">Fair Value</span></div>
+</article>
+</body>
+</html>
+

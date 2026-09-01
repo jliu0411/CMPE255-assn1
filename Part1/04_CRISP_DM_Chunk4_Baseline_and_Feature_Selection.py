@@ -65,12 +65,26 @@ with open(data_dir / "preparation_metadata.json", 'r') as f:
 # Use actual column names from loaded data
 feature_names = list(X_train.columns)
 
-# Convert categorical columns to numeric
+# Convert every non-numeric column with one shared train/test mapping. Pandas
+# 3 may infer its dedicated ``string`` dtype instead of legacy ``object``.
 for col in X_train.columns:
-    if X_train[col].dtype == 'object':
-        # Convert categorical to numeric codes
-        X_train[col] = pd.Categorical(X_train[col]).codes
-        X_test[col] = pd.Categorical(X_test[col]).codes
+    if not pd.api.types.is_numeric_dtype(X_train[col]):
+        combined = pd.concat(
+            [X_train[col].astype("string"), X_test[col].astype("string")],
+            ignore_index=True,
+        )
+        codes, _ = pd.factorize(combined, sort=True)
+        X_train[col] = codes[:len(X_train)]
+        X_test[col] = codes[len(X_train):]
+
+# Enforce the numeric model contract and defensively impute from training data.
+# This also protects Chunk 4 when it is run against artifacts made by an older
+# pandas version whose chained imputation did not persist.
+X_train = X_train.apply(pd.to_numeric, errors="coerce").astype(float)
+X_test = X_test.apply(pd.to_numeric, errors="coerce").astype(float)
+train_medians = X_train.median()
+X_train = X_train.fillna(train_medians).fillna(0.0)
+X_test = X_test.fillna(train_medians).fillna(0.0)
 
 print(f"✓ Loaded training data: {X_train.shape}")
 print(f"✓ Loaded test data: {X_test.shape}")
@@ -156,6 +170,7 @@ for k in k_values:
     y_test_pred_kbest = model_kbest.predict(X_test_kbest)
     
     selectkbest_results[k] = {
+        'model': f'SelectKBest (k={k})',
         'selected_features': selected_features,
         'train_rmse': np.sqrt(mean_squared_error(y_train, y_train_pred_kbest)),
         'test_rmse': np.sqrt(mean_squared_error(y_test, y_test_pred_kbest)),
@@ -197,6 +212,7 @@ for n_features_to_select in [10, 15, 20]:
     y_test_pred_rfe = model_rfe.predict(X_test_rfe)
     
     rfe_results[n_features_to_select] = {
+        'model': f'RFE ({n_features_to_select} features)',
         'selected_features': selected_features_rfe,
         'train_rmse': np.sqrt(mean_squared_error(y_train, y_train_pred_rfe)),
         'test_rmse': np.sqrt(mean_squared_error(y_test, y_test_pred_rfe)),
@@ -244,6 +260,7 @@ y_train_pred_rf = model_rf_selected.predict(X_train_rf)
 y_test_pred_rf = model_rf_selected.predict(X_test_rf)
 
 rf_selection_results = {
+    'model': 'Random Forest Importance (15 features)',
     'selected_features': top_15_features_rf,
     'train_rmse': np.sqrt(mean_squared_error(y_train, y_train_pred_rf)),
     'test_rmse': np.sqrt(mean_squared_error(y_test, y_test_pred_rf)),

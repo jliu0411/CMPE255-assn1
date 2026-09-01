@@ -90,7 +90,7 @@ print("\n[STEP 5] Deployment Recommendation")
 print("-" * 80)
 print("Recommended deployment mode: decision support tool / analytics dashboard")
 print("Deployment steps:")
-print("1. Deploy the trained SVR model behind a lightweight API or internal notebook workflow.")
+print(f"1. Deploy the trained {selected_model} model behind a lightweight API or internal notebook workflow.")
 print("2. Accept player profile features as input and return salary estimate with confidence band.")
 print("3. Show confidence intervals or percentile ranges rather than a single point value.")
 print("4. Use the output as a strategic reference, not as a binding contract valuation.")
@@ -99,7 +99,7 @@ print("5. Update the model when a larger, richer contract dataset becomes availa
 print("\n[STEP 6] Final Executive Summary")
 print("-" * 80)
 print("The NBA salary prediction workflow followed CRISP-DM from business understanding through deployment planning.")
-print("The final model, SVR, produced the most competitive test-set performance among the algorithms evaluated.")
+print(f"The final model, {selected_model}, produced the most competitive test-set performance among the algorithms evaluated.")
 print("The project confirms that performance, efficiency, experience, and defensive impact are meaningful predictors of compensation.")
 print("The resulting solution is suitable for exploratory analysis and business decision support, especially for salary benchmarking and roster strategy.")
 
@@ -114,7 +114,7 @@ Test R²: {selected_r2:.6f}
 Test MAE: {selected_mae:.6f}
 
 RECOMMENDATION:
-The SVR model is the best-performing option in this dataset and should be used as a decision-support tool for salary benchmarking.
+The {selected_model} model is the best-performing option in this dataset and should be used as a decision-support tool for salary benchmarking.
 
 BUSINESS VALUE:
 This model helps estimate player market value, supports roster planning, and provides a structured method to compare players based on performance, efficiency, age, and experience.

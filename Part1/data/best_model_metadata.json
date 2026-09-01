@@ -1,38 +1,39 @@
 {
-  "best_model": "SVR",
+  "best_model": "Gradient Boosting",
   "best_params": {
-    "C": "1",
-    "gamma": "scale",
-    "kernel": "rbf"
+    "learning_rate": "0.05",
+    "max_depth": "5",
+    "n_estimators": "100",
+    "subsample": "0.8"
   },
-  "timestamp": "2026-08-31T21:17:02.212371",
+  "timestamp": "2026-09-01T14:30:05.543869",
   "metrics": {
-    "train_rmse": 1.0492638666593337,
-    "test_rmse": 0.6265573784310065,
-    "train_r2": 0.04400546898458413,
-    "test_r2": -0.004023224895558952,
-    "train_mae": 0.15986057483960825,
-    "test_mae": 0.12439886901147541,
-    "cv_r2": -9.32721397302207e+29
+    "train_rmse": 3.1259805283781157,
+    "test_rmse": 5.79811782142113,
+    "train_r2": 0.8197278240117866,
+    "test_r2": 0.7568813457421524,
+    "train_mae": 2.126654018411344,
+    "test_mae": 3.6300501825454066,
+    "cv_r2": 0.705538850035689
   },
   "feature_count": 15,
   "features": [
-    "Blocks_Per_Game",
-    "Turnovers_Per_Game",
-    "Turnover_Usage_Ratio",
-    "Age_Experience_Gap",
-    "Shooting_Accuracy",
-    "Prime_Age_Factor",
-    "Rebounds_Per_Game",
-    "Rebound_Assist_Ratio",
     "Points_Per_Game",
+    "Year",
     "Minutes_Per_Game",
-    "Three_Point_Percent",
-    "Games_Played",
-    "Defensive_Impact",
+    "Age",
+    "Years_In_League",
+    "Rebounds_Per_Game",
+    "Assists_Per_Game",
+    "Points_Efficiency",
     "Usage_Percent",
-    "Experience_Level"
+    "Field_Goal_Percent",
+    "Turnover_Usage_Ratio",
+    "Games_Played",
+    "Free_Throw_Percent",
+    "Rebound_Assist_Ratio",
+    "Blocks_Per_Game"
   ],
-  "training_samples": 400,
-  "test_samples": 100
+  "training_samples": 5836,
+  "test_samples": 1460
 }

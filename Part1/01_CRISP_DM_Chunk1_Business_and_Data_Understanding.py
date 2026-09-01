@@ -61,6 +61,11 @@ from pathlib import Path
 
 warnings.filterwarnings('ignore')
 
+# Keep the scripts usable from Windows PowerShell's legacy console encoding.
+for stream in (sys.stdout, sys.stderr):
+    if hasattr(stream, "reconfigure"):
+        stream.reconfigure(encoding="utf-8", errors="replace")
+
 # Set style for professional visualizations
 plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette("husl")
@@ -83,7 +88,7 @@ try:
     
     # Download the dataset
     dataset_path = kagglehub.dataset_download(
-        "eoinamoore/historical-nba-data-and-player-box-scores"
+        "ratin21/nba-player-stats-and-salaries-2010-2025"
     )
     print(f"✓ Dataset downloaded successfully!")
     print(f"✓ Path to dataset files: {dataset_path}")
@@ -125,15 +130,20 @@ if use_synthetic:
         'Turnovers_Per_Game': np.random.normal(1.5, 0.8, n_samples),
         'Usage_Percent': np.random.normal(20, 8, n_samples),
         'Years_In_League': np.random.choice(range(1, 20), n_samples),
-        'Salary': np.random.lognormal(14, 1.5, n_samples) / 1000  # In millions
     })
     
     # Add some realistic correlations to salary
-    working_df['Salary'] += (
-        working_df['Points_Per_Game'] * 0.3 +
-        working_df['Years_In_League'] * 0.2 +
-        working_df['Age'] * 0.1 -
-        (30 - working_df['Age'])**2 * 0.01
+    # Salary is expressed in USD millions. Build it from observable basketball
+    # signals plus market noise so the fallback dataset is useful for modeling.
+    working_df['Salary'] = (
+        0.75
+        + working_df['Points_Per_Game'] * 0.72
+        + working_df['Rebounds_Per_Game'] * 0.28
+        + working_df['Assists_Per_Game'] * 0.42
+        + working_df['Years_In_League'] * 0.18
+        + working_df['Usage_Percent'] * 0.12
+        - (working_df['Age'] - 28).clip(lower=0) * 0.22
+        + np.random.normal(0, 2.8, n_samples)
     )
     
     # Add some missing values realistically
@@ -212,6 +222,63 @@ if not use_synthetic:
     if working_df is None:
         working_file = list(dataframes.keys())[0]
         working_df = dataframes[working_file].copy()
+
+    # Normalize the Kaggle schema to the descriptive names used throughout
+    # Chunks 2-7. Salaries are converted from dollars to USD millions.
+    kaggle_columns = {
+        'Pos': 'Position',
+        'G': 'Games_Played',
+        'MP': 'Minutes_Per_Game',
+        'FG%': 'Field_Goal_Percent',
+        '3P%': 'Three_Point_Percent',
+        'FT%': 'Free_Throw_Percent',
+        'PTS': 'Points_Per_Game',
+        'TRB': 'Rebounds_Per_Game',
+        'AST': 'Assists_Per_Game',
+        'STL': 'Steals_Per_Game',
+        'BLK': 'Blocks_Per_Game',
+        'TOV': 'Turnovers_Per_Game',
+    }
+    required_source_columns = {'Player', 'Salary', 'Year', 'Age', 'Team', 'FGA', 'FTA'} | set(kaggle_columns)
+    missing_source_columns = required_source_columns - set(working_df.columns)
+    if missing_source_columns:
+        raise ValueError(
+            "Kaggle dataset schema changed; missing columns: "
+            + ", ".join(sorted(missing_source_columns))
+        )
+
+    # Traded players can have team-stint rows plus a season-total (TOT) row.
+    # Prefer TOT; otherwise retain the row with the most games played.
+    working_df['_total_row'] = (working_df['Team'] == 'TOT').astype(int)
+    working_df = (
+        working_df.sort_values(
+            ['Player', 'Year', '_total_row', 'G'],
+            ascending=[True, True, False, False]
+        )
+        .drop_duplicates(['Player', 'Year'], keep='first')
+        .drop(columns='_total_row')
+        .rename(columns=kaggle_columns)
+    )
+
+    working_df['Salary'] = pd.to_numeric(working_df['Salary'], errors='coerce') / 1_000_000
+    working_df['Years_In_League'] = (working_df['Age'] - 19).clip(lower=1, upper=20)
+    possessions_used = (
+        working_df['FGA'].fillna(0)
+        + 0.44 * working_df['FTA'].fillna(0)
+        + working_df['Turnovers_Per_Game'].fillna(0)
+    )
+    working_df['Usage_Percent'] = (
+        possessions_used * 36 / working_df['Minutes_Per_Game'].replace(0, np.nan)
+    ).clip(0, 45)
+
+    model_columns = [
+        'Player', 'Year', 'Age', 'Position', 'Team', 'Games_Played',
+        'Minutes_Per_Game', 'Field_Goal_Percent', 'Three_Point_Percent',
+        'Free_Throw_Percent', 'Points_Per_Game', 'Rebounds_Per_Game',
+        'Assists_Per_Game', 'Steals_Per_Game', 'Blocks_Per_Game',
+        'Turnovers_Per_Game', 'Usage_Percent', 'Years_In_League', 'Salary'
+    ]
+    working_df = working_df[model_columns].dropna(subset=['Salary']).reset_index(drop=True)
 
 print(f"✓ Working dataset: {working_file}")
 print(f"✓ Dimensions: {working_df.shape[0]} rows, {working_df.shape[1]} columns")

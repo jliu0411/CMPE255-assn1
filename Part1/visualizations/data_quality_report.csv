@@ -1,11 +1,11 @@
 ,Value
-Total Rows,500
+Total Rows,7296
 Total Columns,19
-Total Cells,9500
-Missing Cells,20
-Completeness,99.79%
+Total Cells,138624
+Missing Cells,807
+Completeness,99.42%
 Duplicate Rows,0
 Numeric Features,15
 Categorical Features,2
 Target Variable,Salary
-Data Types,"{dtype('float64'): 12, dtype('int64'): 4, dtype('O'): 3}"
+Data Types,"{dtype('float64'): 12, dtype('int64'): 4, <StringDtype(storage='python', na_value=nan)>: 3}"

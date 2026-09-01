@@ -88,14 +88,14 @@ if len(missing_cols) > 0:
     for col in missing_cols:
         if col in numeric_features:
             mean_val = df[col].mean()
-            df_imputed_mean[col].fillna(mean_val, inplace=True)
+            df_imputed_mean[col] = df_imputed_mean[col].fillna(mean_val)
             print(f"\n✓ Mean Imputation for {col}: {mean_val:.4f}")
     
     # Method 2: Median Imputation
     for col in missing_cols:
         if col in numeric_features:
             median_val = df[col].median()
-            df_imputed_median[col].fillna(median_val, inplace=True)
+            df_imputed_median[col] = df_imputed_median[col].fillna(median_val)
             print(f"✓ Median Imputation for {col}: {median_val:.4f}")
     
     # Method 3: KNN Imputation (on numeric features only)
@@ -221,6 +221,7 @@ scaler_standard = StandardScaler()
 # Only scale numeric columns (exclude categorical)
 numeric_cols_to_scale = [col for col in df.columns 
                          if col not in categorical_features + ['Player', 'Experience_Level']
+                         and col != target_col
                          and df[col].dtype in [np.float64, np.int64]]
 df_standardized[numeric_cols_to_scale] = scaler_standard.fit_transform(df[numeric_cols_to_scale])
 print(f"✓ Standardization: Scaled {len(numeric_cols_to_scale)} numeric features (Z-score)")
@@ -337,6 +338,16 @@ print("-" * 80)
 
 data_dir = Path(__file__).parent / "data"
 data_dir.mkdir(exist_ok=True)
+
+# Persist the training transformation for deployment-time inference.
+scaler_parameters = {
+    col: {"mean": float(mean), "scale": float(scale)}
+    for col, mean, scale in zip(
+        numeric_cols_to_scale, scaler_standard.mean_, scaler_standard.scale_
+    )
+}
+with open(data_dir / "feature_scaler.json", "w", encoding="utf-8") as f:
+    json.dump(scaler_parameters, f, indent=2)
 
 # Save full prepared dataset
 df_encoded.to_csv(data_dir / "02_prepared_data_full.csv", index=False)

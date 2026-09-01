@@ -2,19 +2,19 @@
 MODEL COMPARISON SUMMARY
 ================================================================================
 
-        Algorithm  Train RMSE  Test RMSE  Train R²   Test R²  Train MAE  Test MAE  CV R² (Best)  Overfitting  Training Time (s)                                  Note
-              SVR    1.049264   0.626557  0.044005 -0.004023   0.159861  0.124399 -9.327214e+29     0.048029           1.446968                Support Vector Machine
-       ElasticNet    1.073142   0.627762  0.000000 -0.007889   0.233218  0.178862 -5.588808e+30     0.007889           0.058625         Combined L1+L2 regularization
- Lasso Regression    1.073142   0.627762  0.000000 -0.007889   0.233218  0.178862 -5.607655e+30     0.007889           0.141767 L1 regularization (feature selection)
- Ridge Regression    1.056536   0.651885  0.030707 -0.086836   0.262598  0.240679 -1.139348e+31     0.117543           1.671016                     L2 regularization
-Linear Regression    1.055126   0.666959  0.033294 -0.137679   0.290498  0.286136 -1.919778e+31     0.170974           4.659781                        Baseline model
-    Random Forest    0.704615   0.910726  0.568889 -1.121276   0.137375  0.236914 -9.643934e+30     1.690164          16.472739                   Ensemble tree-based
-   KNN Regression    0.000000   1.003204  1.000000 -1.573953   0.000000  0.236009 -1.607244e+30     2.573953           0.330815             Distance-based regression
-Gradient Boosting    0.000324   1.181546  1.000000 -2.570451   0.000230  0.311351 -2.747233e+28     3.570451          12.341918          Sequential boosting ensemble
+        Algorithm  Train RMSE  Test RMSE  Train RÂ²  Test RÂ²  Train MAE  Test MAE  CV RÂ² (Best)  Overfitting  Training Time (s)                                  Note
+Gradient Boosting    3.125981   5.798118  0.819728 0.756881   2.126654  3.630050      0.705539     0.062846         121.867084          Sequential boosting ensemble
+    Random Forest    2.412616   5.838642  0.892618 0.753471   1.491564  3.634617      0.691739     0.139147         141.889305                   Ensemble tree-based
+              SVR    3.738827   6.016415  0.742114 0.738230   2.156883  3.785542      0.690196     0.003884          86.081043                Support Vector Machine
+   KNN Regression    0.001281   6.718580  1.000000 0.673563   0.000024  4.093299      0.673104     0.326437           3.139836             Distance-based regression
+Linear Regression    4.927825   7.724082  0.552012 0.568543   3.460361  5.383670      0.548120     0.016531           6.365079                        Baseline model
+ Ridge Regression    4.927825   7.724086  0.552012 0.568542   3.460359  5.383672      0.548120     0.016531           2.442053                     L2 regularization
+ Lasso Regression    4.927829   7.724425  0.552011 0.568504   3.460258  5.383759      0.548119     0.016493           0.838042 L1 regularization (feature selection)
+       ElasticNet    4.928610   7.729456  0.551869 0.567942   3.459791  5.385111      0.547965     0.016073           0.715772         Combined L1+L2 regularization
 
 ================================================================================
-BEST MODEL: SVR
+BEST MODEL: Gradient Boosting
 ================================================================================
-Test RMSE: 0.626557
-Test R²:   -0.004023
-Test MAE:  0.124399
+Test RMSE: 5.798118
+Test RÂ²:   0.756881
+Test MAE:  3.630050
