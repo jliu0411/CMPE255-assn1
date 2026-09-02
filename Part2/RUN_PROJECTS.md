@@ -1,3 +1,5 @@
+Youtube link: https://youtu.be/DVadt_wEnLs 
+
 # One-command project launchers
 
 Each Part 2 project has a self-contained PowerShell launcher. Open a terminal in the desired project directory and run:

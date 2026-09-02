@@ -1,44 +1,58 @@
 [
   {
-    "id": "a69d1929-ca8c-4ad0-bcc2-e73ddd727022",
-    "title": "Shape the product roadmap",
-    "notes": "Turn customer signals into the next set of bets.",
-    "status": "in-progress",
+    "id": "1e5fb36f-7356-4bde-9b8e-aaa224da718b",
+    "title": "Eat some food",
+    "notes": "food",
+    "status": "todo",
     "priority": "high",
     "tags": [
-      "Strategy"
+      "Eat food"
     ],
     "dueDate": "2026-09-01",
-    "createdAt": "2026-09-01T04:56:53.115Z",
-    "updatedAt": "2026-09-01T04:56:53.115Z",
+    "createdAt": "2026-09-02T00:00:41.547Z",
+    "updatedAt": "2026-09-02T00:00:41.547Z",
     "completedAt": null
   },
   {
-    "id": "fb0e9ec5-db4f-426c-9c09-0e907dd1fa84",
-    "title": "Review research insights",
-    "notes": "Pull the strongest themes into a one-page brief.",
-    "status": "todo",
-    "priority": "medium",
-    "tags": [
-      "Research"
-    ],
-    "dueDate": "",
-    "createdAt": "2026-09-01T04:56:53.115Z",
-    "updatedAt": "2026-09-01T04:56:53.115Z",
-    "completedAt": null
-  },
-  {
-    "id": "e0191ce8-6c6e-424d-a0e6-46abc8382b22",
-    "title": "Share weekly progress",
-    "notes": "Keep it concise: wins, risks, and next moves.",
+    "id": "7b7edac5-d9eb-4583-8241-31c46067638c",
+    "title": "Eat breakfast",
+    "notes": "yum",
     "status": "done",
     "priority": "low",
     "tags": [
-      "Team"
+      "Personal"
     ],
-    "dueDate": "",
-    "createdAt": "2026-09-01T04:56:53.116Z",
-    "updatedAt": "2026-09-01T04:56:53.116Z",
-    "completedAt": "2026-09-01T04:56:53.116Z"
+    "dueDate": "2026-09-01",
+    "createdAt": "2026-09-01T22:31:58.655Z",
+    "updatedAt": "2026-09-02T00:00:50.562Z",
+    "completedAt": "2026-09-02T00:00:50.562Z"
+  },
+  {
+    "id": "5cc297ac-6a3a-4215-9f05-5ba97cdd7e13",
+    "title": "Eat dinner",
+    "notes": "yum",
+    "status": "done",
+    "priority": "medium",
+    "tags": [
+      "Personal"
+    ],
+    "dueDate": "2026-09-01",
+    "createdAt": "2026-09-01T22:31:36.946Z",
+    "updatedAt": "2026-09-02T00:00:49.861Z",
+    "completedAt": "2026-09-02T00:00:49.861Z"
+  },
+  {
+    "id": "2be26b60-a16c-4d28-aa34-8c78d5e30f4d",
+    "title": "Cook lunch",
+    "notes": "yum",
+    "status": "done",
+    "priority": "high",
+    "tags": [
+      "Personal"
+    ],
+    "dueDate": "2026-09-01",
+    "createdAt": "2026-09-01T22:30:16.620Z",
+    "updatedAt": "2026-09-02T00:00:48.896Z",
+    "completedAt": "2026-09-02T00:00:48.896Z"
   }
 ]

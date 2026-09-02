@@ -56,3 +56,17 @@ python -m pytest -q
 ## Honest expectations
 
 The bundled corpus proves the complete pipeline and teaches architecture behavior. Coherent open-domain chat requires substantially more high-quality data and compute. The UI labels untrained/demo mode, generated output can be incorrect, and conversation state is held in memory only.
+
+## Chat modes
+
+Lumen uses a practical hybrid design so the default chat stays readable:
+
+- **Grounded mode (default):** answers supported questions from the bundled
+  project corpus and clearly declines topics it cannot answer.
+- **Neural mode (experimental):** start a message with `/neural` to sample
+  directly from the from-scratch nano-transformer, for example
+  `/neural Machine learning is`.
+
+The raw neural model has only a tiny educational corpus, so neural-mode output
+can be incomplete or nonsensical. Grounded mode is the recommended chatbot
+experience.

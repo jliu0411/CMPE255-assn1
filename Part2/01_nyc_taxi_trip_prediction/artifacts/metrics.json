@@ -1,5 +1,5 @@
 {
-  "trained_at": "2026-09-01T05:16:55.834660+00:00",
+  "trained_at": "2026-09-01T22:45:46.572206+00:00",
   "source": "sample_train.csv",
   "raw_rows": 12000,
   "training_rows": 9600,
@@ -29,9 +29,9 @@
     "r2": -0.0602
   },
   "model": {
-    "rmsle": 0.0865,
-    "mae_seconds": 38.2,
-    "r2": 0.9803
+    "rmsle": 0.0859,
+    "mae_seconds": 37.9,
+    "r2": 0.9805
   },
   "duration_median_seconds": 660.0,
   "distance_median_km": 2.55
